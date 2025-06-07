@@ -3,7 +3,7 @@
 export UID := $(shell id -u)
 export GID := $(shell id -g)
 
-COMPOSE = UID=$(UID) GID=$(GID) docker-compose
+COMPOSE = UID=$(UID) GID=$(GID) docker compose
 
 .PHONY: up down build logs ps stop run exec shell create-app
 
@@ -15,6 +15,9 @@ down:
 
 build:
 	$(COMPOSE) build
+
+rebuild:
+	$(COMPOSE) build --no-cache
 
 logs:
 	$(COMPOSE) logs -f
@@ -36,3 +39,10 @@ shell:
 
 create-app:
 	$(COMPOSE) run --rm web python manage.py startapp $(APP)
+
+makemigrations:
+	$(COMPOSE) run --rm web python manage.py makemigrations
+
+migrate:
+	$(COMPOSE) run --rm web python manage.py migrate
+
