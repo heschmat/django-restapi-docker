@@ -2,6 +2,8 @@ services:
   web:
     build:
       context: ./backend
+      dockerfile: Dockerfile.dev
+    user: "${UID}:${GID}"
     volumes:
       - ./backend:/app
     ports:
