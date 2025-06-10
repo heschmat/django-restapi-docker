@@ -3,6 +3,8 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile.dev
+      args:
+        - DEV=true
     user: "${UID:?You must set UID}:${GID:?You must set GID}"
     volumes:
       - ./backend:/app

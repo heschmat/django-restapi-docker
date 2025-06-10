@@ -22,6 +22,9 @@ rebuild:
 logs:
 	$(COMPOSE) logs -f
 
+exec-web:
+	$(COMPOSE) exec web bash
+
 ps:
 	$(COMPOSE) ps
 
