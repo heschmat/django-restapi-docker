@@ -52,3 +52,5 @@ makemigrations:
 migrate:
 	$(COMPOSE) run --rm web python manage.py migrate
 
+csu:
+	$(COMPOSE) run --rm web python manage.py createsuperuser

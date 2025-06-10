@@ -4,6 +4,7 @@ from django.db.models import Sum  # Max, ...
 
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+from rest_framework import generics
 
 from api.serializers import (
     ProductSerializer,
@@ -14,17 +15,30 @@ from api.serializers import (
 from api import models
 
 
-@api_view(['GET'])
-def product_list(request):
-    products = models.Product.objects.all()
-    serializer = ProductSerializer(products, many=True)
-    return Response(serializer.data)
+class ProductListAPIView(generics.ListAPIView):
+    # Only show products that are available (stock > 0)
+    queryset = models.Product.objects.filter(stock__gt=100)
+    # queryset = models.Product.objects.exclude(stock__lte=100)
+
+    serializer_class = ProductSerializer
 
 
-def product_detail(request, pk):
-    product = get_object_or_404(models.Product, pk=pk)
-    serializer = ProductSerializer(product)
-    return JsonResponse({'data': serializer.data})
+class ProductDetailAPIView(generics.RetrieveAPIView):
+    queryset = models.Product.objects.all()
+    serializer_class = ProductSerializer
+    lookup_url_kwarg = 'product_id'
+
+# @api_view(['GET'])
+# def product_list(request):
+#     products = models.Product.objects.all()
+#     serializer = ProductSerializer(products, many=True)
+#     return Response(serializer.data)
+
+
+# def product_detail(request, pk):
+#     product = get_object_or_404(models.Product, pk=pk)
+#     serializer = ProductSerializer(product)
+#     return JsonResponse({'data': serializer.data})
 
 
 @api_view(['GET'])
@@ -32,6 +46,15 @@ def order_list(request):
     orders = models.Order.objects.all()
     serializer = OrderSeializer(orders, many=True)
     return Response(serializer.data)
+
+
+class UserOrderListAPIView(generics.ListAPIView):
+    queryset = models.Order.objects.all()
+    serializer_class = OrderSeializer
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        return qs.filter(user=self.request.user)
 
 
 @api_view(['GET'])
