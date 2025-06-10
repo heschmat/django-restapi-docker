@@ -53,3 +53,18 @@ class OrderSeializer(serializers.ModelSerializer):
             'items',
             'total_sum'
         )
+
+
+class OrderInfoSerializer(serializers.Serializer):
+    total_orders = serializers.IntegerField()
+    cancelled_orders = serializers.IntegerField()
+    confirmed_orders = serializers.IntegerField()
+    total_revenue = serializers.DecimalField(max_digits=10, decimal_places=2)
+    average_order_value = serializers.DecimalField(max_digits=10, decimal_places=2)
+
+
+class StockInfoSerializer(serializers.Serializer):
+    total_products = serializers.IntegerField()
+    products_in_stock = serializers.IntegerField()
+    out_of_stock_products = serializers.IntegerField()
+    total_stock_quantity = serializers.IntegerField()
