@@ -25,6 +25,9 @@ logs:
 exec-web:
 	$(COMPOSE) exec web bash
 
+lint:
+	$(COMPOSE) run --rm web flake8
+
 ps:
 	$(COMPOSE) ps
 

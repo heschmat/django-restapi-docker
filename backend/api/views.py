@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
-from django.db.models import Max, Sum
+from django.db.models import Sum  # Max, ...
 
 from rest_framework.response import Response
 from rest_framework.decorators import api_view

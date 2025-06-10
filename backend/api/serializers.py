@@ -25,7 +25,9 @@ class OrderItemSerializer(serializers.ModelSerializer):
     # product = ProductSerializer()
 
     product_name = serializers.CharField(source='product.name')
-    product_price = serializers.DecimalField(source='product.price', max_digits=5, decimal_places=2)
+    product_price = serializers.DecimalField(source='product.price',
+                                             max_digits=5,
+                                             decimal_places=2)
 
     class Meta:
         model = OrderItem
@@ -38,6 +40,7 @@ class OrderSeializer(serializers.ModelSerializer):
     items = OrderItemSerializer(many=True, read_only=True)
 
     total_sum = serializers.SerializerMethodField()
+
     # method name convension: get_<field>
     def get_total_sum(self, obj):
         order_items = obj.items.all()
