@@ -5,6 +5,7 @@ from django.db.models import Sum  # Max, ...
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import generics
+from rest_framework.permissions import IsAuthenticated
 
 from api.serializers import (
     ProductSerializer,
@@ -51,9 +52,11 @@ def order_list(request):
 class UserOrderListAPIView(generics.ListAPIView):
     queryset = models.Order.objects.all()
     serializer_class = OrderSeializer
+    permission_classes = [ IsAuthenticated ]
 
     def get_queryset(self):
         qs = super().get_queryset()
+        # self.request.user refers to the authenticated user.
         return qs.filter(user=self.request.user)
 
 

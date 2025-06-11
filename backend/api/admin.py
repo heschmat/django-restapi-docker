@@ -11,4 +11,5 @@ class OrderAdmin(admin.ModelAdmin):
         OrderItemInline
     ]
 
+
 admin.site.register(Order, OrderAdmin)
