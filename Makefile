@@ -54,3 +54,6 @@ migrate:
 
 csu:
 	$(COMPOSE) run --rm web python manage.py createsuperuser
+
+test:
+	$(COMPOSE) run --rm web python manage.py test
