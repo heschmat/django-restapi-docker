@@ -9,5 +9,5 @@ urlpatterns = [
     path('orders/', views.order_list),
     path('user-orders/', views.UserOrderListAPIView.as_view(), name='user-orders'),
     path('orders-info/', views.order_info),
-    path('stocks-info/', views.stock_info),
+    path('stocks-info/', views.StockInfoAPIView.as_view()),
 ]

@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.views import APIView
 
 from api.serializers import (
     ProductSerializer,
@@ -86,20 +87,39 @@ def order_info(request):
     return Response(serializer.data)
 
 
-@api_view(['GET'])
-def stock_info(request):
-    products = models.Product.objects.all()
+# @api_view(['GET'])
+# def stock_info(request):
+#     products = models.Product.objects.all()
 
-    total_products = products.count()
-    products_in_stock = products.filter(stock__gt=0).count()
-    out_of_stock_products = products.filter(stock=0).count()
-    total_stock_quantity = products.aggregate(total=Sum('stock'))['total'] or 0
+#     total_products = products.count()
+#     products_in_stock = products.filter(stock__gt=0).count()
+#     out_of_stock_products = products.filter(stock=0).count()
+#     total_stock_quantity = products.aggregate(total=Sum('stock'))['total'] or 0
 
-    serializer = StockInfoSerializer({
-        'total_products': total_products,
-        'products_in_stock': products_in_stock,
-        'out_of_stock_products': out_of_stock_products,
-        'total_stock_quantity': total_stock_quantity,
-    })
+#     serializer = StockInfoSerializer({
+#         'total_products': total_products,
+#         'products_in_stock': products_in_stock,
+#         'out_of_stock_products': out_of_stock_products,
+#         'total_stock_quantity': total_stock_quantity,
+#     })
 
-    return Response(serializer.data)
+#     return Response(serializer.data)
+
+
+class StockInfoAPIView(APIView):
+    def get(self, request):
+        products = models.Product.objects.all()
+
+        total_products = products.count()
+        products_in_stock = products.filter(stock__gt=0).count()
+        out_of_stock_products = products.filter(stock=0).count()
+        total_stock_quantity = products.aggregate(total=Sum('stock'))['total'] or 0
+
+        serializer = StockInfoSerializer({
+            'total_products': total_products,
+            'products_in_stock': products_in_stock,
+            'out_of_stock_products': out_of_stock_products,
+            'total_stock_quantity': total_stock_quantity,
+        })
+
+        return Response(serializer.data)
