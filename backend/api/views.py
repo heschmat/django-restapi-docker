@@ -1,5 +1,5 @@
-from django.shortcuts import get_object_or_404
-from django.http import JsonResponse
+# from django.shortcuts import get_object_or_404
+# from django.http import JsonResponse
 from django.db.models import Sum  # Max, ...
 
 from rest_framework.response import Response
@@ -50,14 +50,20 @@ class ProductListCreateAPIView(generics.ListCreateAPIView):
         self.permission_classes = [AllowAny]
         # Only admin user can post a new product.
         if self.request.method == 'POST':
-            self.permission_classes = [ IsAdminUser ]
+            self.permission_classes = [IsAdminUser]
         return super().get_permissions()
 
 
-class ProductDetailAPIView(generics.RetrieveAPIView):
+class ProductDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = models.Product.objects.all()
     serializer_class = ProductSerializer
     lookup_url_kwarg = 'product_id'
+
+    def get_permissions(self):
+        self.permission_classes = [AllowAny]
+        if self.request.method in ['PUT', 'PATCH', 'DELETE']:
+            self.permission_classes = [IsAdminUser]
+        return super().get_permissions()
 
 # @api_view(['GET'])
 # def product_list(request):
@@ -82,7 +88,7 @@ def order_list(request):
 class UserOrderListAPIView(generics.ListAPIView):
     queryset = models.Order.objects.all()
     serializer_class = OrderSeializer
-    permission_classes = [ IsAuthenticated ]
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         qs = super().get_queryset()
