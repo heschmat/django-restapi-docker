@@ -5,7 +5,11 @@ from django.db.models import Sum  # Max, ...
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import generics
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import (
+    IsAuthenticated,
+    IsAdminUser,
+    AllowAny
+)
 from rest_framework.views import APIView
 
 from api.serializers import (
@@ -17,12 +21,37 @@ from api.serializers import (
 from api import models
 
 
-class ProductListAPIView(generics.ListAPIView):
-    # Only show products that are available (stock > 0)
-    queryset = models.Product.objects.filter(stock__gt=100)
-    # queryset = models.Product.objects.exclude(stock__lte=100)
+# class ProductListAPIView(generics.ListAPIView):
+#     # Only show products that are available (stock > 0)
+#     queryset = models.Product.objects.filter(stock__gt=100)
+#     # queryset = models.Product.objects.exclude(stock__lte=100)
 
+#     serializer_class = ProductSerializer
+
+
+# class ProductCreateAPIView(generics.CreateAPIView):
+#     queryset = models.Product
+#     serializer_class = ProductSerializer
+
+#     # We're not doing anything here;
+#     # just to showcase we can overwrite the methods. and what `request.data` look like.
+#     # for exampl, it includes csrf token as well.
+#     def create(self, request, *args, **kwargs):
+#         print(request.data)
+#         return super().create(request, *args, **kwargs)
+
+
+# or simply:
+class ProductListCreateAPIView(generics.ListCreateAPIView):
+    queryset = models.Product.objects.all()
     serializer_class = ProductSerializer
+
+    def get_permissions(self):
+        self.permission_classes = [AllowAny]
+        # Only admin user can post a new product.
+        if self.request.method == 'POST':
+            self.permission_classes = [ IsAdminUser ]
+        return super().get_permissions()
 
 
 class ProductDetailAPIView(generics.RetrieveAPIView):

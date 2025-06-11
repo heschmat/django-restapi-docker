@@ -1,0 +1,14 @@
+# requires extention: REST Client for Visual Studio Code
+
+GET http://localhost:8000/api/products/1 HTTP/1.1
+
+###
+POST http://localhost:8000/api/products/ HTTP/1.1
+Content-Type: application/json
+
+{
+    "name": "Lenovo Laptop Yoga",
+    "price": "800",
+    "stock": 10,
+    "description": "buy at your own risk!"
+}
