@@ -15,15 +15,39 @@ Content-Type: application/json
 }
 
 ###
-DELETE http://localhost:8000/api/products/16 HTTP/1.1
+DELETE http://localhost:8000/api/products/21 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ5NzI4OTAyLCJpYXQiOjE3NDk3Mjg2MDIsImp0aSI6ImJhMmZhYzVhOGQzYzQyMDc4NjgzNDkwOGFmNjIyNTM0IiwidXNlcl9pZCI6MX0.pI_ho0u4FoekXDOjr4DT5oVYdY93I3xpcp4xLjLacrk
 
 ###
 POST http://localhost:8000/api/products/ HTTP/1.1
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ5NzE3NTI1LCJpYXQiOjE3NDk3MTcyMjUsImp0aSI6IjlmN2E4OGVhNjFjNDRhN2E4MDJjMjllMDcwZDQ1MjM0IiwidXNlcl9pZCI6NH0.B95RVa1qUSTHABwYFTJiCtQNRCxpkwOTWnAyKtDpXxU
 
 {
-    "name": "Lenovo Laptop Yoga",
-    "price": "800",
-    "stock": 10,
-    "description": "buy at your own risk!"
+    "name": "Super Better",
+    "price": "10",
+    "stock": 123,
+    "description": "Jane"
 }
+
+###
+POST http://localhost:8000/api/token/ HTTP/1.1
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "changeME!"
+}
+
+
+###
+POST http://localhost:8000/api/token/refresh/ HTTP/1.1
+Content-Type: application/json
+
+{
+  "refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc0OTgwNDUxNiwiaWF0IjoxNzQ5NzE4MTE2LCJqdGkiOiJmMGFkZDcwNWQyOWI0YmNiYTUyNjZhMmYyNTU5ZDc3ZSIsInVzZXJfaWQiOjR9.LxNcEJb0ueOOcF-jX2HsqkzkT007WlXiyRHixGkLmSI"
+}
+
+###
+GET http://localhost:8000/api/user-orders/ HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ5NzI4Nzg0LCJpYXQiOjE3NDk3Mjg0ODQsImp0aSI6IjNiYWU5YTljYWU0NTRlYWFhMWFjODllYmFmY2FlZGI2IiwidXNlcl9pZCI6NX0.F_I-apq-kHXjT1qEj56XA9XTUUMqQpRaS_Ez4hbdYEY

@@ -23,9 +23,14 @@ class UserOrderAPITestCase(TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertTrue(all(order['user'] == self.user2.id for order in orders))
 
-    def test_user_orders_unauthenticated_user_gets_403(self):
+    def test_user_orders_unauthenticated_user_gets_401(self):
+        """
+        When the permission checks fail, either of the followings is sent as response:
+        either "403 Forbidden" or "401 Unauthorized"
+        As JWT is top of the authentication list (in settings.py), 401 will be sent.
+        """
         response = self.client.get(reverse('user-orders'))
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def test_user_orders_does_not_include_others_orders(self):
         self.client.force_login(self.user1)
